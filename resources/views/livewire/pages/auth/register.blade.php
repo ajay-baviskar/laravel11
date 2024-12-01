@@ -14,6 +14,7 @@ new #[Layout('layouts.guest')] class extends Component
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
+    public string $g_recaptcha_response = ''; // To store the captcha response
 
     /**
      * Handle an incoming registration request.
@@ -22,22 +23,30 @@ new #[Layout('layouts.guest')] class extends Component
     {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            'g_recaptcha_response' => ['required'], // Validate reCAPTCHA
+        ], [
+            'g_recaptcha_response.required' => 'Please complete the reCAPTCHA.',
         ]);
 
+        // Hash the password before storing it
         $validated['password'] = Hash::make($validated['password']);
 
+        // Create the user and fire the Registered event
         event(new Registered($user = User::create($validated)));
 
+        // Log the user in
         Auth::login($user);
 
+        // Redirect to the dashboard
         $this->redirect(route('dashboard', absolute: false), navigate: true);
     }
-}; ?>
+};
+ ?>
 
 <div>
-    <form wire:submit="register">
+    <form wire:submit.prevent="register">
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -55,24 +64,27 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
-
             <x-text-input wire:model="password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
+                          type="password"
+                          name="password"
+                          required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <!-- Confirm Password -->
         <div class="mt-4">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
             <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
+                          type="password"
+                          name="password_confirmation" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <!-- Google reCAPTCHA -->
+        <div class="mt-4">
+            {!! NoCaptcha::renderJs() !!}
+            {!! NoCaptcha::display() !!}
+            <x-input-error :messages="$errors->get('g_recaptcha_response')" class="mt-2" />
         </div>
 
         <div class="flex items-center justify-end mt-4">
@@ -86,3 +98,4 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
     </form>
 </div>
+
