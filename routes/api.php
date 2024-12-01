@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Employee\EmployeeController;
+use App\Http\Controllers\googleAuthController;
 use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
@@ -46,3 +47,5 @@ ROute::get('collection', function () {
         return empty($name);
     });
 });
+
+

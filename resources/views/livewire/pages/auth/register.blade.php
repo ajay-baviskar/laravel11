@@ -25,10 +25,12 @@ new #[Layout('layouts.guest')] class extends Component
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
-            'g_recaptcha_response' => ['required'], // Validate reCAPTCHA
-        ], [
-            'g_recaptcha_response.required' => 'Please complete the reCAPTCHA.',
-        ]);
+            // 'g_recaptcha_response' => ['required'], // Validate reCAPTCHA
+        ],
+        // [
+        //     'g_recaptcha_response.required' => 'Please complete the reCAPTCHA.',
+        // ]
+    );
 
         // Hash the password before storing it
         $validated['password'] = Hash::make($validated['password']);
