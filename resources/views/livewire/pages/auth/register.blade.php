@@ -15,6 +15,8 @@ new #[Layout('layouts.guest')] class extends Component
     public string $password = '';
     public string $password_confirmation = '';
     public string $g_recaptcha_response = ''; // To store the captcha response
+    public string $role = ''; // To store the captcha response
+
 
     /**
      * Handle an incoming registration request.
@@ -25,6 +27,7 @@ new #[Layout('layouts.guest')] class extends Component
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            'role'=>['required','string']
             // 'g_recaptcha_response' => ['required'], // Validate reCAPTCHA
         ],
         // [
@@ -61,6 +64,12 @@ new #[Layout('layouts.guest')] class extends Component
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <div>
+            <x-input-label for="role" :value="__('role')" />
+            <x-text-input wire:model="role" id="role" class="block mt-1 w-full" type="text" name="role" required autofocus autocomplete="role" />
+            <x-input-error :messages="$errors->get('role')" class="mt-2" />
         </div>
 
         <!-- Password -->

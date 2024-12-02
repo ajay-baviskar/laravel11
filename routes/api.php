@@ -6,6 +6,7 @@ use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteRegistrar;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -49,3 +50,14 @@ ROute::get('collection', function () {
 });
 
 
+Route::get('/sendMail', function () {
+    $data = ["name" => "Ajay Baviskar"];
+
+    Mail::send('email', $data, function ($msg) {
+        $msg->to('ajay.baviskar88@gmail.com', "Advance Laravel")
+            ->subject("Advance Laravel");
+            // ->setBody("Hi, I am Software Enginner");
+    });
+
+    echo "mail sent";
+});
