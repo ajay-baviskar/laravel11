@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\googleAuthController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
@@ -27,5 +28,11 @@ Route::get('greeting',function ()
     return view('greeting',["name"=>"Ajay Baviskar"]);
 });
 
+Route::view('test-view','home');
+Route::view('logins','login');
+Route::post('logins',[UserController::class,'login']);
+Route::get('logout',[UserController::class,'logout']);
 
+
+Route::view('profiles','profiles');
 require __DIR__.'/auth.php';
