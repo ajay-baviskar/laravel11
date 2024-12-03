@@ -29,10 +29,10 @@ Route::get('greeting',function ()
 });
 
 Route::view('test-view','home');
-Route::view('logins','login');
-Route::post('logins',[UserController::class,'login']);
+
+Route::view('logins','logins');
+Route::post('login',[UserController::class,'login']);
+
 Route::get('logout',[UserController::class,'logout']);
-
-
 Route::view('profiles','profiles');
 require __DIR__.'/auth.php';

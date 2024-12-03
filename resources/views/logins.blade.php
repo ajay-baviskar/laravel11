@@ -71,7 +71,7 @@
 <body>
     <div class="login-container">
         <h1>Login</h1>
-        <form action="logins" method="post">
+        <form action="login" method="POST">
             @csrf
             <div class="form-group">
                 <label for="email">Email</label>
@@ -84,10 +84,8 @@
             <button type="submit" class="btn">Login</button>
         </form>
         <div class="forgot-password">
-            <a href="logout">Logout</a>
+            <a href="/forgot-password">Forgot Password?</a>
         </div>
     </div>
-
-
 </body>
 </html>

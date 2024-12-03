@@ -4,6 +4,7 @@ use App\Http\Controllers\Employee\EmployeeController;
 use App\Http\Controllers\googleAuthController;
 use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Facades\Mail;
@@ -60,4 +61,15 @@ Route::get('/sendMail', function () {
     });
 
     echo "mail sent";
+});
+
+
+Route::post('register-user',[UserController::class,'Registration']);
+Route::post('user-login',[UserController::class,'userLogin']);
+
+
+Route::middleware(['auth:sanctum','isAdmin','isAuth'])->group(function()
+{
+    Route::get('get-all-data',[UserController::class,'getAllUsers']);
+
 });

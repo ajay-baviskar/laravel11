@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Middleware\Admin;
+namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddelware
+class AuthCheck
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,10 @@ class AdminMiddelware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->role != 'Admin')
+
+        if(!Auth::user())
         {
-            return response()->json(["code"=>401,"staus"=>false,"msg"=>"Opps! You do not have permission to access."]);
+            return response()->json(["code"=>401,"staus"=>false,"msg"=>"No token"]);
 
         }
         return $next($request);

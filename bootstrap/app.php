@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->alias([
             'isAdmin' => \App\Http\Middleware\Admin\AdminMiddelware::class,
+            'isAuth' => \App\Http\Middleware\AuthCheck::class,
+
+
         ]);
 
     })
